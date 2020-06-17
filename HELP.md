@@ -22,3 +22,9 @@ These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
+
+### Additional Information
+
+* [Postgre-, RESTful-Guide](https://www.javaguides.net/2019/01/springboot-postgresql-jpa-hibernate-crud-restful-api-tutorial.html)
+* [Liquibase-Guide](https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/)
+* [GUI-Http-Client](https://addons.mozilla.org/de/firefox/addon/rested/)
