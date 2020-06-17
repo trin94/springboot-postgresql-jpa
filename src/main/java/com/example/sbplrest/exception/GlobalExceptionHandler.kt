@@ -10,11 +10,7 @@ import java.time.LocalDateTime
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    private data class Details(
-        override val timestamp: LocalDateTime,
-        override val message: String,
-        override val details: String
-    ) : ErrorDetails
+    private data class Details(val timestamp: LocalDateTime, val message: String, val details: String)
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun resourceNotFoundException(e: ResourceNotFoundException, request: WebRequest): ResponseEntity<Any> {
@@ -27,6 +23,5 @@ class GlobalExceptionHandler {
         val details = Details(LocalDateTime.now(), e.message!!, request.getDescription(false))
         return ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR)
     }
-
 
 }
