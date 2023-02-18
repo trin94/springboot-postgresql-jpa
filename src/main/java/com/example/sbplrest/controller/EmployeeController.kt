@@ -3,7 +3,6 @@ package com.example.sbplrest.controller
 import com.example.sbplrest.exception.ResourceNotFoundException
 import com.example.sbplrest.model.Employee
 import com.example.sbplrest.repository.EmployeeRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -11,10 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1")
-class EmployeeController {
-
-    @Autowired
-    private lateinit var repo: EmployeeRepository
+class EmployeeController(
+    val repo: EmployeeRepository
+) {
 
     @GetMapping("/employees")
     fun getAllEmployee(): List<Employee> = repo.findAll()
@@ -22,7 +20,7 @@ class EmployeeController {
     @GetMapping("/employee/{id}")
     fun getEmployeeById(
         @PathVariable(value = "id") id: Long
-    ): ResponseEntity<Employee> = ResponseEntity.ok(repo.getById(id))
+    ): ResponseEntity<Employee> = ResponseEntity.ok(repo.findBy(id))
 
     @PostMapping("/employee")
     fun createEmployee(
@@ -34,7 +32,7 @@ class EmployeeController {
         @PathVariable(value = "id") id: Long,
         @Validated @RequestBody details: Employee
     ): ResponseEntity<Employee> {
-        val employee = repo.getById(id).apply {
+        val employee = repo.findBy(id).apply {
             firstName = details.firstName
             lastName = details.lastName
             email = details.email
@@ -43,9 +41,9 @@ class EmployeeController {
     }
 
     @DeleteMapping("/employee/{id}")
-    fun deleteEmployee(@PathVariable(value = "id") id: Long) = repo.delete(repo.getById(id))
+    fun deleteEmployee(@PathVariable(value = "id") id: Long) = repo.delete(repo.findBy(id))
 
     @Throws(ResourceNotFoundException::class)
-    private fun EmployeeRepository.getById(id: Long) = repo.findByIdOrNull(id)
+    private fun EmployeeRepository.findBy(id: Long) = repo.findByIdOrNull(id)
         ?: throw ResourceNotFoundException("employee", id)
 }
